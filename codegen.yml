@@ -1,0 +1,21 @@
+overwrite: true
+schema: 'http://localhost:5001/oiiu-launch-app/asia-east2/graphql'
+headers:
+  authorization: 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJwZXJtaXNzaW9uIjoidmlzaXRvciIsImlhdCI6MTYxMDE0Nzk0MiwiYXVkIjoib2lpdS5jb20iLCJpc3MiOiJSaWZhdCBIb3NzYWluIiwic3ViIjoib2lpdS12aXNpdG9yIn0.bRsDB4eLnvXIWENVDIH2khs0WlD6L2nKjPrZHqp9jVuSSfanyFqLAvrCn3bCrpxUGovbuxsLzhKRdAuJbTeXqQ'
+documents: '**/*.graphql'
+generates:
+  generated/graphql.ts:
+    config:
+      reactApolloVersion: 3
+      withHooks: true
+      withHocs: false
+      withComponent: false
+      exportFragmentSpreadSubTypes: true
+      documentMode: graphQLTag
+      defaultMapper: true
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
