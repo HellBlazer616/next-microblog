@@ -1,5 +1,5 @@
-import Head from "next/head";
-import tw from "twin.macro";
+import Head from 'next/head';
+import tw from 'twin.macro';
 
 export default function Home() {
   return (
