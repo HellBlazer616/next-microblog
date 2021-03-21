@@ -1,24 +1,25 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"lib": ["dom", "dom.iterable", "esnext"],
-		"allowJs": true,
-		"skipLibCheck": true,
-		"strict": true,
-		"forceConsistentCasingInFileNames": true,
-		"noEmit": true,
-		"esModuleInterop": true,
-		"module": "esnext",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"allowSyntheticDefaultImports": true,
-		"removeComments": true,
-		"importHelpers": true,
-		"noFallthroughCasesInSwitch": true
-	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/apolloClient.tsx"],
-	"exclude": ["node_modules"],
-	"files": ["@types/twin.d.ts"]
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "allowSyntheticDefaultImports": true,
+    "removeComments": true,
+    "importHelpers": true,
+    "noFallthroughCasesInSwitch": true,
+    "experimentalDecorators": true
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/apolloClient.tsx"],
+  "exclude": ["node_modules"],
+  "files": ["@types/twin.d.ts"]
 }

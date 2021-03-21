@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = {
   presets: [
     [
@@ -10,5 +11,10 @@ module.exports = {
       },
     ],
   ],
-  plugins: ['@emotion/babel-plugin', 'babel-plugin-macros'],
+  plugins: [
+    '@emotion/babel-plugin', 
+    'babel-plugin-macros', 
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    'babel-plugin-transform-typescript-metadata',
+  ],
 };
