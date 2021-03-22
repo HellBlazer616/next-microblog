@@ -23,12 +23,17 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         let date: string | number = Date.now();
 
-        if (query.cursor !== '') {
+        if (query.cursor !== 'NULL') {
           date = String(query.cursor);
         }
 
-        const data = await getPosts(new Date(date));
-        res.status(200).json({ success: true, data });
+        const posts = await getPosts(new Date(date));
+        res.status(200).json({
+          success: true,
+          data: {
+            posts,
+          },
+        });
         return;
       } catch (error) {
         console.error(error);
@@ -44,14 +49,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           return;
         }
 
-        const data = await createPost({ authorId, text });
+        const post = await createPost({ authorId, text });
 
-        if (data == null) {
+        if (post == null) {
           res.status(400).json({ success: false });
           return;
         }
 
-        res.status(200).json({ success: true, data });
+        res.status(200).json({
+          success: true,
+          data: {
+            post,
+          },
+        });
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false });
@@ -72,22 +82,32 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         if (like === 'TRUE') {
-          const data = await likePost({ userId, postId });
-          if (data == null) {
+          const post = await likePost({ userId, postId });
+          if (post == null) {
             res.status(400).json({ success: false });
             return;
           }
-          res.status(200).json({ success: true, data });
+          res.status(200).json({
+            success: true,
+            data: {
+              post,
+            },
+          });
           return;
         }
 
         if (like === 'FALSE') {
-          const data = await disLikePost({ userId, postId });
-          if (data == null) {
+          const post = await disLikePost({ userId, postId });
+          if (post == null) {
             res.status(400).json({ success: false });
             return;
           }
-          res.status(200).json({ success: true, data });
+          res.status(200).json({
+            success: true,
+            data: {
+              post,
+            },
+          });
           return;
         }
 

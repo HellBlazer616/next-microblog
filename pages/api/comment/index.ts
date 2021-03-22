@@ -17,13 +17,18 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(400).json({ success: false });
           return;
         }
-        const data = await commentPost({ postId, authorId, text });
-        if (data == null) {
+        const comment = await commentPost({ postId, authorId, text });
+        if (comment == null) {
           res.status(400).json({ success: false });
           return;
         }
 
-        res.status(200).json({ success: true, data });
+        res.status(200).json({
+          success: true,
+          data: {
+            comment,
+          },
+        });
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false });

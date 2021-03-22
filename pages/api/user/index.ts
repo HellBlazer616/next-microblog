@@ -21,11 +21,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(400).json({ success: false });
           return;
         }
-        const user = await createUser({
+        const data = await createUser({
           name: bodyData.name,
           uid: bodyData.uid,
         });
-        res.status(200).json({ success: true, user });
+        res.status(200).json({ success: true, data });
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false });

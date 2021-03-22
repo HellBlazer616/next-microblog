@@ -3,22 +3,27 @@ import { getPostById } from '../../../server/controller/postController';
 import dbConnect from '../../../utils/dbConnect';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  const { method, body } = req;
+  const { method, query } = req;
   await dbConnect();
   switch (method) {
     case 'GET': {
       try {
-        const { id } = body;
+        const { id } = query;
         if (typeof id !== 'string') {
           res.status(400).json({ success: false });
           return;
         }
-        const data = await getPostById(id);
-        if (data == null) {
+        const post = await getPostById(id);
+        if (post == null) {
           res.status(400).json({ success: false });
           return;
         }
-        res.status(200).json({ success: false, data });
+        res.status(200).json({
+          success: false,
+          data: {
+            post,
+          },
+        });
       } catch (error) {
         console.error(error);
         res.status(400).json({ success: false });
