@@ -48,6 +48,7 @@ module.exports = {
     'no-var': 'warn',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['warn'],
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     'no-param-reassign': 'warn',
     '@typescript-eslint/no-explicit-any': 'off',
     'react/react-in-jsx-scope': 'off',

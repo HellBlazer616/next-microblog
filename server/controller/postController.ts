@@ -10,11 +10,25 @@ const createPost = async ({ authorId, text }: CreatePostProps) => {
     authorId,
     text,
   });
-  const post = await PostModel.findOne({ authorId })
+  const post = await PostModel.findOne({ authorId, text })
     .populate('author')
     .lean()
     .exec();
   return post;
+};
+
+const getPosts = async (cursor: Date) => {
+  const posts = await PostModel.find({ createdAt: { $lt: cursor } })
+    .sort({ createdAt: -1 })
+    .limit(2)
+    .populate('author')
+    .populate('comments')
+    .populate('likedByUsers')
+    .populate('disLikedByUsers')
+    .lean()
+    .exec();
+
+  return posts;
 };
 
 const getPostById = async (id: string) => {
@@ -73,4 +87,4 @@ const disLikePost = async ({ userId, postId }: DisLikePostArgs) => {
   return post;
 };
 
-export { createPost, getPostById, likePost, disLikePost };
+export { createPost, getPostById, likePost, disLikePost, getPosts };

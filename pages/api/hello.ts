@@ -5,6 +5,7 @@ import { commentPost } from '../../server/controller/commentController';
 import {
   createPost,
   disLikePost,
+  getPosts,
   likePost,
 } from '../../server/controller/postController';
 import { UserModel } from '../../server/model/User';
@@ -22,13 +23,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         // });
         // const doc = await createPost({
         //   authorId: 'rifath',
-        //   text: 'this is a another post',
+        //   text: 'this is a 5th post',
         // });
-        const doc = await commentPost({
-          postId: '6056d2d66fabcba6bce5db3c',
-          authorId: 'rifath',
-          text: 'this is another comment',
-        });
+        // const doc = await commentPost({
+        //   postId: '6056d2d66fabcba6bce5db3c',
+        //   authorId: 'rifath',
+        //   text: 'this is another comment',
+        // });
         // const doc = await likePost({
         //   userId: 'rifat',
         //   postId: '6056d2d66fabcba6bce5db3c',
@@ -37,6 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         //   userId: 'rifath',
         //   postId: '6056d2d66fabcba6bce5db3c',
         // });
+        const doc = await getPosts(new Date('2021-03-21T10:43:41.592Z'));
         res.status(200).json({ success: true, post: doc });
       } catch (error) {
         console.error(error);

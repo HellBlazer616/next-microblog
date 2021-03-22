@@ -29,18 +29,19 @@ class Post extends TimeStamps {
   @prop({required: true, default: Date.now})
   public updatedAt!: Date
   
-  //virtual field
+  //virtual populate
   @prop({ref: () => User, required: true, localField: 'authorId', foreignField: 'uid', justOne: true})
   public author!: Ref<User>
 
-  //virtual field
+  //virtual populate
   @prop({ref: () => User, required: true, localField: 'likedByUsersId', foreignField: 'uid'})
   public likedByUsers?: Ref<User>[]; 
 
-  //virtual field
+  //virtual populate
   @prop({ref: () => User, required: true, localField: 'disLikedByUsersId', foreignField: 'uid'})
   public disLikedByUsers?: Ref<User>[]; 
 }
 
 const PostModel = getModelForClass(Post);
+
 export {PostModel, Post}
