@@ -12,7 +12,7 @@ interface CustomCSSProperties extends CSSProperties {
 }
 
 const customCSSVariables: CustomCSSProperties = {
-  '--nav-width': '4rem',
+  '--nav-width': '20rem',
 };
 
 const LayOut: FC = ({ children }) => {
@@ -44,40 +44,22 @@ const LayOut: FC = ({ children }) => {
           <Link passHref href="/home">
             <a>
               <HiHome className="menu__icon" />
+              Home
             </a>
           </Link>
 
           <Link passHref href="/home">
             <a>
               <HiHashtag className="menu__icon" />
+              Profile
             </a>
           </Link>
         </div>
         <div tw="flex items-center justify-center">
-          <AccountButton
-            type="button"
-            tw="w-full"
-            onClick={() => setShowMenu(!showMenu)}
-          >
+          <AccountButton type="button" tw="px-6 py-2 w-full">
             <HiUser className="menu__icon" />
+            Sign out
           </AccountButton>
-          {showMenuTransition.map(
-            ({ item, key, props }) =>
-              item && (
-                <BaseMenu
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="options-menu"
-                  key={key}
-                  style={props}
-                  tw="left-14"
-                >
-                  <button className="btn" type="button" tw="" role="menuitem">
-                    Sign out
-                  </button>
-                </BaseMenu>
-              )
-          )}
         </div>
       </Aside>
 
@@ -146,19 +128,22 @@ const Page = styled.div`
 `;
 
 const Aside = styled.aside`
-  ${tw`fixed z-10 left-0 top-0 hidden flex-col items-center justify-between py-8 h-screen text-white bg-primary-400 md:flex`}
+  ${tw`fixed z-10 left-0 top-0 hidden flex-col justify-between px-20 py-8 h-screen text-white bg-primary-400 lg:flex`}
   width: var(--nav-width);
+  a {
+    ${tw`grid grid-cols-2 items-center px-6 py-2 text-xl hover:bg-primary-300 rounded-full`}
+  }
 `;
 
 const Footer = styled.footer`
-  ${tw`fixed bottom-0 flex items-center justify-between px-8 w-full h-16 bg-primary-400 shadow md:hidden`}
+  ${tw`fixed bottom-0 flex items-center justify-between px-8 w-full h-16 bg-primary-400 shadow lg:hidden`}
   a {
     ${tw`items-center h-full`}
   }
 `;
 
 const AccountButton = styled.button`
-  ${tw`relative inline-flex items-center justify-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+  ${tw`relative inline-flex items-center justify-between px-2 py-2 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
 `;
 
 const BaseMenu = styled(animated.div)`
