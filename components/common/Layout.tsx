@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { CSSProperties, FC, ReactNode } from 'react';
+import React, { CSSProperties, FC, ReactNode, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import { HiHashtag, HiHome, HiUser } from 'react-icons/hi';
+import { useTransition, config, animated } from 'react-spring';
 import VisuallyHidden from '../misc/VisuallyHidden';
+import useOnClickOutSide from '../../hooks/useOnClickOutSide';
 
 interface CustomCSSProperties extends CSSProperties {
   '--nav-width': string;
@@ -14,6 +16,27 @@ const customCSSVariables: CustomCSSProperties = {
 };
 
 const LayOut: FC = ({ children }) => {
+  const [showMenu, setShowMenu] = useState(false);
+
+  const showMenuTransition = useTransition(showMenu, null, {
+    from: {
+      opacity: 0,
+      scale: 95,
+      transform: `translate3d(0px,10px,3px)`,
+    },
+    enter: {
+      opacity: 1,
+      scale: 100,
+      transform: `translate3d(0,0,0)`,
+    },
+    leave: {
+      opacity: 0,
+      scale: 95,
+      transform: `translate3d(0px,10px,3px)`,
+    },
+    config: config.stiff,
+  });
+
   return (
     <Page style={customCSSVariables}>
       <Aside>
@@ -31,9 +54,30 @@ const LayOut: FC = ({ children }) => {
           </Link>
         </div>
         <div tw="flex items-center justify-center">
-          <AccountButton type="button" tw="w-full">
+          <AccountButton
+            type="button"
+            tw="w-full"
+            onClick={() => setShowMenu(!showMenu)}
+          >
             <HiUser className="menu__icon" />
           </AccountButton>
+          {showMenuTransition.map(
+            ({ item, key, props }) =>
+              item && (
+                <BaseMenu
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                  key={key}
+                  style={props}
+                  tw="left-14"
+                >
+                  <button className="btn" type="button" tw="" role="menuitem">
+                    Sign out
+                  </button>
+                </BaseMenu>
+              )
+          )}
         </div>
       </Aside>
 
@@ -56,10 +100,31 @@ const LayOut: FC = ({ children }) => {
           </Link>
         </div>
         <div tw="flex items-center justify-center">
-          <AccountButton type="button" tw="w-full">
+          <AccountButton
+            type="button"
+            tw="w-full"
+            onClick={() => setShowMenu(!showMenu)}
+          >
             <VisuallyHidden>Home</VisuallyHidden>
             <HiUser className="menu__icon" />
           </AccountButton>
+          {showMenuTransition.map(
+            ({ item, key, props }) =>
+              item && (
+                <BaseMenu
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                  key={key}
+                  style={props}
+                  tw="bottom-16"
+                >
+                  <button className="btn" type="button" tw="" role="menuitem">
+                    Sign out
+                  </button>
+                </BaseMenu>
+              )
+          )}
         </div>
       </Footer>
     </Page>
@@ -93,7 +158,15 @@ const Footer = styled.footer`
 `;
 
 const AccountButton = styled.button`
-  ${tw`inline-flex items-center justify-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+  ${tw`relative inline-flex items-center justify-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+`;
+
+const BaseMenu = styled(animated.div)`
+  ${tw`absolute mt-2 w-24 text-white bg-primary-300 rounded-md focus:outline-none shadow-lg origin-top-right ring-black ring-opacity-5 ring-1`}
+
+  & .btn {
+    ${tw`block px-4 py-2 w-full text-left text-sm hover:bg-primary-100 border border-transparent rounded-md outline-none focus:outline-none focus:ring-accent-400 focus:ring-1`}
+  }
 `;
 
 export default LayOut;
