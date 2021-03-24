@@ -1,11 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { CSSProperties, FC, ReactNode, useState } from 'react';
+import { CSSProperties, FC, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
-import { HiHashtag, HiHome, HiUser } from 'react-icons/hi';
+import { HiHashtag, HiHome, HiOutlineX, HiUser } from 'react-icons/hi';
 import { useTransition, config, animated } from 'react-spring';
+import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
+import '@reach/dialog/styles.css';
+
 import VisuallyHidden from '../misc/VisuallyHidden';
-import useOnClickOutSide from '../../hooks/useOnClickOutSide';
 
 interface CustomCSSProperties extends CSSProperties {
   '--nav-width': string;
@@ -17,6 +19,9 @@ const customCSSVariables: CustomCSSProperties = {
 
 const LayOut: FC = ({ children }) => {
   const [showMenu, setShowMenu] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
+  const open = () => setShowDialog(true);
+  const close = () => setShowDialog(false);
 
   const showMenuTransition = useTransition(showMenu, null, {
     from: {
@@ -55,12 +60,30 @@ const LayOut: FC = ({ children }) => {
             </a>
           </Link>
         </div>
-        <div tw="flex items-center justify-center">
+        <div tw="flex flex-col justify-center space-y-6">
+          <AccountButton type="button" tw="px-6 py-2 w-full" onClick={open}>
+            <HiUser className="menu__icon" />
+            Tweet
+          </AccountButton>
           <AccountButton type="button" tw="px-6 py-2 w-full">
             <HiUser className="menu__icon" />
             Sign out
           </AccountButton>
         </div>
+        <Dialog tw="relative text-white bg-primary-300" isOpen={showDialog}>
+          <div tw="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+            <button
+              type="button"
+              tw="text-gray-400 hover:text-gray-500 rounded-md focus:outline-none focus:ring-accent-500 focus:ring-2"
+              onClick={close}
+            >
+              <span tw="sr-only">Close</span>
+
+              <HiOutlineX tw="w-6 h-6" />
+            </button>
+          </div>
+          <p>My text is red because the style prop got applied to the div</p>
+        </Dialog>
       </Aside>
 
       {children}
@@ -82,14 +105,14 @@ const LayOut: FC = ({ children }) => {
           </Link>
         </div>
         <div tw="flex items-center justify-center">
-          <AccountButton
+          <FooterButton
             type="button"
             tw="w-full"
             onClick={() => setShowMenu(!showMenu)}
           >
             <VisuallyHidden>Home</VisuallyHidden>
             <HiUser className="menu__icon" />
-          </AccountButton>
+          </FooterButton>
           {showMenuTransition.map(
             ({ item, key, props }) =>
               item && (
@@ -117,7 +140,7 @@ const Page = styled.div`
   ${tw`min-h-screen text-white bg-primary-500 md:grid-cols-2`}
 
   & .menu__icon {
-    ${tw`w-8 h-8`}
+    ${tw`w-9 h-9`}
   }
   a {
     ${tw`inline-flex justify-center w-full rounded-sm transform-gpu transition`}
@@ -154,4 +177,7 @@ const BaseMenu = styled(animated.div)`
   }
 `;
 
+const FooterButton = styled.button`
+  ${tw`inline-flex items-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+`;
 export default LayOut;
