@@ -2,12 +2,19 @@
 import { CSSProperties, FC, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
-import { HiHashtag, HiHome, HiOutlineX, HiUser } from 'react-icons/hi';
+import {
+  HiHashtag,
+  HiHome,
+  HiOutlineX,
+  HiPaperAirplane,
+  HiUser,
+} from 'react-icons/hi';
 import { useTransition, config, animated } from 'react-spring';
 import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
 import VisuallyHidden from '../misc/VisuallyHidden';
+import ShoutOutBox from '../home/ShoutOutBox';
 
 interface CustomCSSProperties extends CSSProperties {
   '--nav-width': string;
@@ -70,13 +77,13 @@ const LayOut: FC = ({ children }) => {
           </Link>
         </div>
         <div tw="flex flex-col justify-center space-y-6">
-          <AccountButton type="button" tw="px-6 py-2 w-full" onClick={open}>
-            <HiUser className="menu__icon" />
-            Tweet
+          <AccountButton type="button" tw="px-5 py-2 w-full" onClick={open}>
+            <HiPaperAirplane className="menu__icon" />
+            <span>Shout out</span>
           </AccountButton>
-          <AccountButton type="button" tw="px-6 py-2 w-full">
+          <AccountButton type="button" tw="px-5 py-2 w-full">
             <HiUser className="menu__icon" />
-            Sign out
+            <span>Sign out</span>
           </AccountButton>
         </div>
         {showDialogTransition.map(
@@ -90,8 +97,9 @@ const LayOut: FC = ({ children }) => {
               >
                 <AnimatedDialogContent
                   as="div"
-                  tw="relative z-40 text-white bg-primary-200"
+                  tw="relative z-40 mx-auto w-11/12 text-white bg-transparent xl:w-2/4"
                   style={props}
+                  aria-label="compose micro message"
                 >
                   <div tw="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                     <button
@@ -103,9 +111,7 @@ const LayOut: FC = ({ children }) => {
                       <HiOutlineX tw="w-6 h-6" />
                     </button>
                   </div>
-                  <p>
-                    My text is red because the style prop got applied to the div
-                  </p>
+                  <ShoutOutBox />
                 </AnimatedDialogContent>
               </AnimatedDialogOverlay>
             )
@@ -192,7 +198,7 @@ const Footer = styled.footer`
 `;
 
 const AccountButton = styled.button`
-  ${tw`relative inline-flex items-center justify-between px-2 py-2 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+  ${tw`relative inline-flex items-center px-2 py-2 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm space-x-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
 `;
 
 const BaseMenu = styled(animated.div)`

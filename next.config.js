@@ -22,7 +22,7 @@ const nextConfig = {
     return config;
   },
   images: {
-    domains: [],
+    domains: ["placedog.net"],
   },
   reactStrictMode: true,
 
