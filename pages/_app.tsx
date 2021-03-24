@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
           <Toaster />
         </Hydrate>
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} position="top-right" />
     </QueryClientProvider>
   );
 }

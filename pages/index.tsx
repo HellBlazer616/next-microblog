@@ -18,14 +18,14 @@ export default function Home() {
     console.log({ formData });
   };
   return (
-    <div tw="min-h-screen bg-primary-500 text-white flex">
-      <div tw="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6  lg:px-20 xl:px-24">
+    <div tw="flex min-h-screen text-white bg-primary-500">
+      <div tw="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:px-20 xl:px-24">
         <div tw="mx-auto w-full max-w-sm lg:w-96">
           <div>
-            <div tw="h-12 w-32 relative">
+            <div tw="relative w-32 h-12">
               <Image layout="fill" src="/vercel.svg" alt="Workflow" />
             </div>
-            <h2 tw="mt-6 text-3xl font-extrabold text-accent-500">
+            <h2 tw="mt-6 text-accent-500 text-3xl font-extrabold">
               Sign in to your account
             </h2>
           </div>
@@ -35,7 +35,7 @@ export default function Home() {
               <div>
                 <label
                   htmlFor="email"
-                  tw="block text-sm font-medium text-white"
+                  tw="block text-white text-sm font-medium"
                 >
                   Email address
                 </label>
@@ -55,7 +55,7 @@ export default function Home() {
                         message: 'Please provide a valid email address',
                       },
                     })}
-                    tw="appearance-none text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm"
+                    tw="placeholder-gray-400 block px-3 py-2 w-full text-black border focus:border-accent-500 border-gray-300 rounded-md focus:outline-none shadow-sm appearance-none focus:ring-accent-500 sm:text-sm"
                   />
                 </div>
                 {errors.email && (
@@ -66,7 +66,7 @@ export default function Home() {
               <div tw="space-y-1">
                 <label
                   htmlFor="password"
-                  tw="block text-sm font-medium text-white"
+                  tw="block text-white text-sm font-medium"
                 >
                   Password
                 </label>
@@ -86,7 +86,7 @@ export default function Home() {
                         message: 'Password must be at least 6 characters',
                       },
                     })}
-                    tw="appearance-none text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent-500 focus:border-accent-500 sm:text-sm"
+                    tw="placeholder-gray-400 block px-3 py-2 w-full text-black border focus:border-accent-500 border-gray-300 rounded-md focus:outline-none shadow-sm appearance-none focus:ring-accent-500 sm:text-sm"
                   />
                 </div>
                 {errors.password && (
@@ -97,10 +97,10 @@ export default function Home() {
               <div>
                 <button
                   type="submit"
-                  tw="relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-accent-600 hover:bg-accent-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent-500"
+                  tw="relative flex justify-center px-4 py-2 w-full text-white text-sm font-medium bg-accent-600 hover:bg-accent-700 border border-transparent rounded-md focus:outline-none focus:ring-accent-500 focus:ring-offset-2 focus:ring-2"
                 >
-                  <span tw="absolute left-0 inset-y-0 flex items-center pl-3">
-                    <HiLockClosed tw="h-5 w-5 text-white hover:text-gray-50" />
+                  <span tw="absolute inset-y-0 left-0 flex items-center pl-3">
+                    <HiLockClosed tw="w-5 h-5 hover:text-gray-50 text-white" />
                   </span>
                   Sign in
                 </button>
