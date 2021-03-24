@@ -1,9 +1,10 @@
-import { css } from "twin.macro";
+import { css } from 'twin.macro';
 
 const stylesBase = css`
   body {
-    font-family: "Inter";
+    font-family: 'Inter';
     background: #ffffff;
+    color: #fff;
   }
 
   html {
@@ -30,13 +31,13 @@ const stylesBase = css`
   }
 
   input {
-    font-family: "Inter";
+    font-family: 'Inter';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
 
