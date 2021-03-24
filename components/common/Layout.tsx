@@ -22,6 +22,8 @@ const LayOut: FC = ({ children }) => {
   const [showDialog, setShowDialog] = useState(false);
   const open = () => setShowDialog(true);
   const close = () => setShowDialog(false);
+  const AnimatedDialogOverlay = animated(DialogOverlay);
+  const AnimatedDialogContent = animated(DialogContent);
 
   const showMenuTransition = useTransition(showMenu, null, {
     from: {
@@ -39,6 +41,13 @@ const LayOut: FC = ({ children }) => {
       scale: 95,
       transform: `translate3d(0px,10px,3px)`,
     },
+    config: config.stiff,
+  });
+
+  const showDialogTransition = useTransition(showDialog, null, {
+    from: { opacity: 0, transform: `translate3d(0px,-10px,3px)` },
+    enter: { opacity: 1, transform: `translate3d(0,0,0)` },
+    leave: { opacity: 0, transform: `translate3d(0px,10px,3px)` },
     config: config.stiff,
   });
 
@@ -70,20 +79,37 @@ const LayOut: FC = ({ children }) => {
             Sign out
           </AccountButton>
         </div>
-        <Dialog tw="relative text-white bg-primary-300" isOpen={showDialog}>
-          <div tw="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
-            <button
-              type="button"
-              tw="text-gray-400 hover:text-gray-500 rounded-md focus:outline-none focus:ring-accent-500 focus:ring-2"
-              onClick={close}
-            >
-              <span tw="sr-only">Close</span>
-
-              <HiOutlineX tw="w-6 h-6" />
-            </button>
-          </div>
-          <p>My text is red because the style prop got applied to the div</p>
-        </Dialog>
+        {showDialogTransition.map(
+          ({ item, key, props }) =>
+            item && (
+              <AnimatedDialogOverlay
+                as="div"
+                isOpen={showDialog}
+                key={key}
+                style={{ opacity: props.opacity }}
+              >
+                <AnimatedDialogContent
+                  as="div"
+                  tw="relative z-40 text-white bg-primary-200"
+                  style={props}
+                >
+                  <div tw="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                    <button
+                      type="button"
+                      tw="text-gray-400 hover:text-gray-500 rounded-md focus:outline-none focus:ring-accent-500 focus:ring-2"
+                      onClick={close}
+                    >
+                      <span tw="sr-only">Close</span>
+                      <HiOutlineX tw="w-6 h-6" />
+                    </button>
+                  </div>
+                  <p>
+                    My text is red because the style prop got applied to the div
+                  </p>
+                </AnimatedDialogContent>
+              </AnimatedDialogOverlay>
+            )
+        )}
       </Aside>
 
       {children}
@@ -151,7 +177,7 @@ const Page = styled.div`
 `;
 
 const Aside = styled.aside`
-  ${tw`fixed z-10 left-0 top-0 hidden flex-col justify-between px-20 py-8 h-screen text-white bg-primary-400 lg:flex`}
+  ${tw`fixed left-0 top-0 hidden flex-col justify-between px-20 py-8 h-screen text-white bg-primary-400 lg:flex`}
   width: var(--nav-width);
   a {
     ${tw`grid grid-cols-2 items-center px-6 py-2 text-xl hover:bg-primary-300 rounded-full`}
