@@ -38,7 +38,3 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-columns: auto 1fr;
 `;
-
-const ShoutOutBoxButton = styled.button`
-  ${tw`inline-flex items-center px-3 py-3 text-white text-lg font-medium bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-primary-100 focus:ring-offset-2 focus:ring-2`}
-`;

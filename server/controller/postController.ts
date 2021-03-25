@@ -19,7 +19,7 @@ const createPost = async ({ authorId, text }: CreatePostArgs) => {
 
 const getPosts = async (cursor: Date) => {
   const posts = await PostModel.find({ createdAt: { $lt: cursor } })
-    .sort({ createdAt: -1 })
+    .sort({ updatedAt: -1 })
     .limit(5)
     .populate('author')
     .populate('comments')
@@ -47,6 +47,7 @@ const getPostById = async (id: getPostByIdArgs) => {
 export type getUsersPostArgs = string;
 const getUsersPost = async (uid: getUsersPostArgs) => {
   const post = await PostModel.find({ authorId: uid })
+    .sort({ updatedAt: -1 })
     .populate('author')
     .populate('comments')
     .populate('likedByUsers')

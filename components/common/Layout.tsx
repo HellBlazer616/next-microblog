@@ -10,7 +10,7 @@ import {
   HiUser,
 } from 'react-icons/hi';
 import { useTransition, config, animated } from 'react-spring';
-import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
+import { DialogOverlay, DialogContent } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
 import VisuallyHidden from '../misc/VisuallyHidden';

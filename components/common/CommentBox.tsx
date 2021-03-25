@@ -5,7 +5,7 @@ import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
-import { Comment, Post } from '../../base';
+import { Post } from '../../base';
 import { AuthContext } from '../../context/auth';
 
 type Input = {
