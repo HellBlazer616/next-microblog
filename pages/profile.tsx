@@ -8,6 +8,7 @@ import useRedirect from '../hooks/useRedirect';
 import { AuthContext } from '../context/auth';
 import { Post } from '../base';
 import ShoutOutBox from '../components/common/ShoutOutBox';
+import MyLoader from '../components/common/MyLoader';
 
 type Props = {
   success: boolean;
@@ -19,7 +20,7 @@ type Props = {
 const Profile = () => {
   useRedirect();
   const { user } = useContext(AuthContext);
-  const { data } = useQuery<Props>(
+  const { data, status } = useQuery<Props>(
     ['user', user?.uid],
     async () => {
       const res = await axios.get(`/api/user/posts/${user?.uid}`);
@@ -29,11 +30,11 @@ const Profile = () => {
       enabled: user?.uid != null,
     }
   );
-  console.log(user?.uid);
   return (
     <LayOut>
       <Main>
         <ShoutOutBox />
+        {status === 'loading' && <MyLoader />}
         {data?.data.posts != null ? (
           data.data.posts.map((post) => {
             return <ShoutOutShowCase post={post} key={post._id} />;

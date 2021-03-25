@@ -9,6 +9,7 @@ import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
 import useRedirect from '../hooks/useRedirect';
 
 import { Post } from '../base';
+import MyLoader from '../components/common/MyLoader';
 
 type Props = {
   success: boolean;
@@ -32,34 +33,10 @@ const EndMessage = () => {
   );
 };
 
-const Loading = () => {
-  <span tw="mx-auto max-w-prose">
-    <svg
-      tw="-ml-1 mr-3 w-5 h-5 text-white animate-spin"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-    >
-      <circle
-        tw="opacity-25"
-        cx="12"
-        cy="12"
-        r="10"
-        stroke="currentColor"
-        strokeWidth="4"
-      />
-      <path
-        tw="opacity-75"
-        fill="currentColor"
-        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-      />
-    </svg>
-  </span>;
-};
 const Home = () => {
   useRedirect();
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<Props>(
+  const { data, fetchNextPage, hasNextPage, status } = useInfiniteQuery<Props>(
     'posts',
     async ({ pageParam = 'FIRST' }) => {
       const res = await axios.get(`/api/posts?cursor=${pageParam}`);
@@ -89,10 +66,11 @@ const Home = () => {
     <LayOut>
       <Main>
         <ShoutOutBox />
+        {status === 'loading' && <MyLoader />}
         {data?.pages != null && (
           <InfiniteScroll
             next={fetchNextPage}
-            loader={<div>Loading</div>}
+            loader={<MyLoader />}
             hasMore={hasNextPage === true}
             dataLength={postsLength}
             endMessage={<EndMessage />}
