@@ -1,21 +1,49 @@
 import tw, { styled } from 'twin.macro';
+import { useQuery } from 'react-query';
+import { useContext } from 'react';
+import axios from 'axios';
 import CommentBox from '../components/common/CommentBox';
 import LayOut from '../components/common/Layout';
 import CommentShowCase from '../components/common/CommentShowCase';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
 import useRedirect from '../hooks/useRedirect';
+import { AuthContext } from '../context/auth';
+import { Post } from '../base';
+import ShoutOutBox from '../components/common/ShoutOutBox';
+
+type Props = {
+  success: boolean;
+  data: {
+    posts: Post[];
+  };
+};
 
 const Profile = () => {
   useRedirect();
+  const { user } = useContext(AuthContext);
+  const { data } = useQuery<Props>(
+    ['user', 'post'],
+    async () => {
+      const res = await axios.get(`/api/user/posts/${user?.uid}`);
+      return res.data;
+    },
+    {
+      enabled: user?.uid != null,
+    }
+  );
   return (
     <LayOut>
       <Main>
-        {/* <ShoutOutShowCase /> */}
-        <section tw="space-y-2">
-          <CommentShowCase />
-          <CommentShowCase />
-        </section>
-        <CommentBox />
+        <ShoutOutBox />
+        {data?.data.posts != null ? (
+          data.data.posts.map((post) => {
+            return <ShoutOutShowCase post={post} key={post._id} />;
+          })
+        ) : (
+          <div tw="flex items-center justify-center mx-auto max-w-xl h-24 text-base bg-accent-500">
+            <p>Write your first post</p>
+          </div>
+        )}
       </Main>
     </LayOut>
   );

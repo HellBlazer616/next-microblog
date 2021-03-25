@@ -14,7 +14,7 @@ import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
 import VisuallyHidden from '../misc/VisuallyHidden';
-import ShoutOutBox from '../home/ShoutOutBox';
+import ShoutOutBox from './ShoutOutBox';
 import { AuthContext } from '../../context/auth';
 
 interface CustomCSSProperties extends CSSProperties {

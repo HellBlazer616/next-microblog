@@ -35,7 +35,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
   }, [post.comments]);
 
   return (
-    <div tw="mx-auto max-w-prose">
+    <div tw="space-y-3">
       <Wrapper>
         <figure>
           <Image
@@ -86,8 +86,10 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
         </div>
       </Wrapper>
       <section tw="space-y-2">
-        {/* <CommentShowCase />
-        <CommentShowCase /> */}
+        {post.comments != null &&
+          post.comments.map((comment) => {
+            return <CommentShowCase comment={comment} />;
+          })}
       </section>
     </div>
   );
@@ -96,7 +98,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
 export default ShoutOutShowCase;
 
 const Wrapper = styled.div`
-  ${tw`gap-x-4 mx-auto p-4 hover:bg-primary-300 bg-primary-400 rounded-xl focus:outline-none shadow-2xl transform-gpu transition focus:ring-accent-500 focus:ring`}
+  ${tw`gap-x-4 mx-auto p-4 max-w-prose hover:bg-primary-300 bg-primary-400 rounded-xl focus:outline-none shadow-2xl transform-gpu transition focus:ring-accent-500 focus:ring`}
   display: grid;
   grid-template-columns: auto 1fr;
 `;

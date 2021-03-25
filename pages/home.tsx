@@ -1,17 +1,11 @@
-import { DocumentType } from '@typegoose/typegoose';
-import axios, { AxiosResponse } from 'axios';
-import { DocumentDefinition, Types } from 'mongoose';
-import { GetStaticProps } from 'next';
+import axios from 'axios';
 import tw, { styled } from 'twin.macro';
-import { FC } from 'react';
-import { QueryClient, useInfiniteQuery } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
+import { useInfiniteQuery } from 'react-query';
 import LayOut from '../components/common/Layout';
-import ShoutOutBox from '../components/home/ShoutOutBox';
+import ShoutOutBox from '../components/common/ShoutOutBox';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
 import useRedirect from '../hooks/useRedirect';
-import { getPosts } from '../server/controller/postController';
-import dbConnect from '../utils/dbConnect';
+
 import { Post } from '../base';
 
 type Props = {
@@ -25,7 +19,7 @@ type Props = {
 const Home = () => {
   useRedirect();
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<Props>(
+  const { data, fetchNextPage } = useInfiniteQuery<Props>(
     'posts',
     async ({ pageParam = 'FIRST' }) => {
       const res = await axios.get(`/api/posts?cursor=${pageParam}`);
@@ -44,9 +38,6 @@ const Home = () => {
     <LayOut>
       <Main>
         <ShoutOutBox />
-        <button type="button" onClick={() => fetchNextPage()}>
-          Fetch
-        </button>
         {data?.pages != null &&
           data.pages.map((page) =>
             page.data.posts.map((post) => (

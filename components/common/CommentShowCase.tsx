@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
 import tw, { styled } from 'twin.macro';
 import Image from 'next/image';
+import { Comment } from '../../base';
 
-const CommentShowCase = () => {
+type Props = {
+  comment: Comment;
+};
+
+const CommentShowCase: FC<Props> = ({ comment }) => {
   return (
     <Wrapper>
       <figure>
@@ -17,15 +22,10 @@ const CommentShowCase = () => {
       </figure>
       <div tw="space-y-4">
         <span tw="text-accent-500 font-bold">
-          Rifat Hossain <span tw="text-white text-sm font-normal"> 1h</span>
+          {comment.author}
+          <span tw="text-white text-sm font-normal"> {comment.updatedAt}</span>
         </span>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus a modi
-          hic assumenda quaerat dolore. Similique facere quam eaque
-          reprehenderit ab itaque et, tenetur saepe, velit praesentium expedita
-          beatae cumque! Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit. Minus a modi hic assumenda
-        </div>
+        <div>{comment.text}</div>
       </div>
     </Wrapper>
   );

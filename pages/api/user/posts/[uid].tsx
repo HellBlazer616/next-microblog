@@ -14,12 +14,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           return;
         }
         const post = await getUsersPost(uid);
-        if (post == null) {
-          res.status(400).json({ success: false });
-          return;
-        }
         res.status(200).json({
-          success: false,
+          success: true,
           data: {
             post,
           },
