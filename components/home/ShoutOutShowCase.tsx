@@ -53,16 +53,9 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
     },
   });
 
-  const handleLike = () => {
+  const likePost = () => {
     if (user == null) {
       toast.error('Please log in before liking post');
-      return;
-    }
-    if (
-      post.likedByUsers != null &&
-      post.likedByUsers.find((userData) => userData.uid === user.uid)
-    ) {
-      toast.success('You have already liked the post');
       return;
     }
     toast.promise(
@@ -79,16 +72,9 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
     );
   };
 
-  const handleDisLike = () => {
+  const disLikePost = () => {
     if (user == null) {
       toast.error('Please log in before liking post');
-      return;
-    }
-    if (
-      post.disLikedByUsers != null &&
-      post.disLikedByUsers.find((userData) => userData.uid === user.uid)
-    ) {
-      toast.success('You have already liked the post');
       return;
     }
     toast.promise(
@@ -103,6 +89,36 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
         error: 'Could not',
       }
     );
+  };
+
+  const handleLike = () => {
+    if (user == null) {
+      toast.error('Please log in before liking post');
+      return;
+    }
+    if (
+      post.likedByUsers != null &&
+      post.likedByUsers.find((userData) => userData.uid === user.uid)
+    ) {
+      toast.success('You have already liked the post');
+      return;
+    }
+    likePost();
+  };
+
+  const handleDisLike = () => {
+    if (user == null) {
+      toast.error('Please log in before liking post');
+      return;
+    }
+    if (
+      post.disLikedByUsers != null &&
+      post.disLikedByUsers.find((userData) => userData.uid === user.uid)
+    ) {
+      toast.success('You have already liked the post');
+      return;
+    }
+    disLikePost();
   };
 
   const likedBy = useMemo(() => {
