@@ -17,8 +17,8 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(400).json({ success: false });
           return;
         }
-        const comment = await commentPost({ postId, authorId, text });
-        if (comment == null) {
+        const post = await commentPost({ postId, authorId, text });
+        if (post == null) {
           res.status(400).json({ success: false });
           return;
         }
@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(200).json({
           success: true,
           data: {
-            comment,
+            post,
           },
         });
       } catch (error) {

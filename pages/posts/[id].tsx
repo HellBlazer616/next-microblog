@@ -43,7 +43,7 @@ const PostById = () => {
           <ShoutOutShowCaseWithComment post={data?.data.post} />
         )}
 
-        <CommentBox />
+        <CommentBox postId={data?.data.post?._id} />
       </Main>
     </LayOut>
   );

@@ -1,17 +1,65 @@
-import React from 'react';
+import React, { FC, useContext } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
+import { Comment, Post } from '../../base';
+import { AuthContext } from '../../context/auth';
 
 type Input = {
   text: string;
 };
 
-const CommentBox = () => {
-  const { register, errors, handleSubmit } = useForm<Input>();
+type Props = {
+  postId?: string;
+};
+
+interface Variables extends Input {
+  authorId: string;
+  postId: string;
+}
+
+const CommentBox: FC<Props> = ({ postId }) => {
+  const { register, errors, handleSubmit, reset, setError } = useForm<Input>();
+  const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation<Post, any, Variables>(
+    (createComment) => axios.post('/api/comment', createComment),
+    {
+      onSuccess: () => {
+        reset();
+        queryClient.invalidateQueries(['user', user?.uid]);
+        queryClient.invalidateQueries(['posts']);
+        queryClient.invalidateQueries(['post', postId]);
+      },
+    }
+  );
 
   const onSubmit = (formData: Input) => {
-    console.log({ formData });
+    if (postId == null) {
+      toast.error('Invalid post');
+      return;
+    }
+    if (user?.uid == null) {
+      setError('text', {
+        message: 'Please sign in to comment',
+      });
+      return;
+    }
+    toast.promise(
+      mutateAsync({
+        authorId: user.uid,
+        text: formData.text,
+        postId,
+      }),
+      {
+        loading: 'Saving post',
+        success: 'Successfully saved post',
+        error: 'Could not save post',
+      }
+    );
   };
   return (
     <Wrapper tw="">
