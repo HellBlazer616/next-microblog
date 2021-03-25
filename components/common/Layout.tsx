@@ -18,10 +18,12 @@ import ShoutOutBox from '../home/ShoutOutBox';
 
 interface CustomCSSProperties extends CSSProperties {
   '--nav-width': string;
+  '--footer-height': string;
 }
 
 const customCSSVariables: CustomCSSProperties = {
   '--nav-width': '20rem',
+  '--footer-height': '4rem',
 };
 
 const LayOut: FC = ({ children }) => {
@@ -69,7 +71,7 @@ const LayOut: FC = ({ children }) => {
             </a>
           </Link>
 
-          <Link passHref href="/home">
+          <Link passHref href="/profile">
             <a>
               <HiHashtag className="menu__icon" />
               Profile
@@ -97,11 +99,11 @@ const LayOut: FC = ({ children }) => {
               >
                 <AnimatedDialogContent
                   as="div"
-                  tw="relative z-40 mx-auto w-11/12 text-white bg-transparent xl:w-2/4"
+                  tw="relative z-40 mx-auto p-0 w-full text-white bg-transparent sm:w-11/12 xl:w-2/4"
                   style={props}
                   aria-label="compose micro message"
                 >
-                  <div tw="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                  <div tw="absolute -top-3 right-0 pr-4 pt-4">
                     <button
                       type="button"
                       tw="text-gray-400 hover:text-gray-500 rounded-md focus:outline-none focus:ring-accent-500 focus:ring-2"
@@ -129,14 +131,18 @@ const LayOut: FC = ({ children }) => {
             </a>
           </Link>
 
-          <Link passHref href="/home">
+          <Link passHref href="/profile">
             <a>
               <VisuallyHidden>Home</VisuallyHidden>
               <HiHashtag className="menu__icon" />
             </a>
           </Link>
         </div>
-        <div tw="flex items-center justify-center">
+        <div tw="flex items-center justify-center space-x-3">
+          <FooterButton type="button" tw="w-full" onClick={open}>
+            <VisuallyHidden>Home</VisuallyHidden>
+            <HiPaperAirplane className="menu__icon" />
+          </FooterButton>
           <FooterButton
             type="button"
             tw="w-full"
@@ -190,13 +196,6 @@ const Aside = styled.aside`
   }
 `;
 
-const Footer = styled.footer`
-  ${tw`fixed bottom-0 flex items-center justify-between px-8 w-full h-16 bg-primary-400 shadow lg:hidden`}
-  a {
-    ${tw`items-center h-full`}
-  }
-`;
-
 const AccountButton = styled.button`
   ${tw`relative inline-flex items-center px-2 py-2 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm space-x-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
 `;
@@ -209,7 +208,15 @@ const BaseMenu = styled(animated.div)`
   }
 `;
 
+const Footer = styled.footer`
+  ${tw`fixed bottom-0 flex items-center justify-between px-8 w-full bg-primary-400 shadow lg:hidden`}
+  height: var(--footer-height);
+  a {
+    ${tw`items-center h-full`}
+  }
+`;
+
 const FooterButton = styled.button`
-  ${tw`inline-flex items-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-2 focus:ring-2`}
+  ${tw`inline-flex items-center p-1 text-white bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-primary-200 focus:ring-offset-2 focus:ring-2`}
 `;
 export default LayOut;

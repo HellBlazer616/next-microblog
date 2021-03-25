@@ -20,7 +20,6 @@ const stylesBase = css`
   }
   body::-webkit-scrollbar-track {
     background: var(--scrollbarBG);
-    border-radius: 10px;
   }
   body::-webkit-scrollbar-thumb {
     background-color: var(--thumbBG);

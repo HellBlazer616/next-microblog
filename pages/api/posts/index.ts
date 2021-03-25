@@ -23,14 +23,19 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
         let date: string | number = Date.now();
 
-        if (query.cursor !== 'NULL') {
+        if (query.cursor !== 'FIRST') {
           date = String(query.cursor);
         }
 
         const posts = await getPosts(new Date(date));
+        let cursor = null;
+        if (posts.length > 0) {
+          cursor = posts[posts.length - 1].createdAt;
+        }
         res.status(200).json({
           success: true,
           data: {
+            cursor,
             posts,
           },
         });

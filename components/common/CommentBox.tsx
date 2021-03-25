@@ -57,7 +57,7 @@ const CommentBox = () => {
           tw="inline-flex self-end px-6 py-2 bg-accent-500 border-transparent rounded-full focus:outline-none focus:ring-accent-500 focus:ring"
           type="submit"
         >
-          Shout out
+          Comment
         </button>
       </form>
     </Wrapper>

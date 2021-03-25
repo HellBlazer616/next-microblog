@@ -1,14 +1,19 @@
 import tw, { styled } from 'twin.macro';
+import CommentBox from '../components/common/CommentBox';
 import LayOut from '../components/common/Layout';
-import ShoutOutBox from '../components/home/ShoutOutBox';
+import CommentShowCase from '../components/common/CommentShowCase';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
 
-const Home = () => {
+const Profile = () => {
   return (
     <LayOut>
       <Main>
-        <ShoutOutBox />
         <ShoutOutShowCase />
+        <section tw="space-y-2">
+          <CommentShowCase />
+          <CommentShowCase />
+        </section>
+        <CommentBox />
       </Main>
     </LayOut>
   );
@@ -21,4 +26,4 @@ const Main = styled.main`
     margin-left: calc(var(--nav-width) + 0.5rem);
   }
 `;
-export default Home;
+export default Profile;

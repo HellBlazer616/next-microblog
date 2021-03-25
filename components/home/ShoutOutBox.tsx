@@ -54,7 +54,7 @@ const ShoutOutBox = () => {
 
         {errors.text && <p tw="text-accent-400">{errors.text.message}</p>}
         <button
-          tw="inline-flex self-end px-6 py-2 bg-accent-500 border-transparent rounded-full focus:outline-none focus:ring-accent-500 focus:ring"
+          tw="inline-flex self-end px-6 py-2 bg-accent-600 hover:bg-accent-700 border-transparent rounded-full focus:outline-none focus:ring-accent-500 focus:ring"
           type="submit"
         >
           Shout out
@@ -65,8 +65,12 @@ const ShoutOutBox = () => {
 };
 
 const Wrapper = styled.div`
-  ${tw`gap-x-4 mx-auto p-4 max-w-prose h-64 bg-primary-400 rounded-xl shadow-lg`}
+  ${tw`gap-x-4 mx-auto p-4 max-w-prose bg-primary-400 rounded-xl shadow-lg`}
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 50px 1fr;
+
+  textarea {
+    min-height: 7rem;
+  }
 `;
 export default ShoutOutBox;

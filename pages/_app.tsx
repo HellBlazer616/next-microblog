@@ -7,10 +7,11 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { Toaster } from 'react-hot-toast';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import 'nprogress/nprogress.css';
+
 import { useRef } from 'react';
 import { AuthProvider } from '../context/auth';
 import stylesBase from '../styles/styleBase';
+import '../styles/nprogress.css';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
