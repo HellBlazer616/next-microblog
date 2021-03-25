@@ -5,9 +5,8 @@ import tw from 'twin.macro';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { HiLockClosed } from 'react-icons/hi';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { AuthContext } from '../context/auth';
 
 interface Inputs {
@@ -17,17 +16,9 @@ interface Inputs {
 
 export default function Home() {
   const { register, handleSubmit, errors } = useForm<Inputs>();
-  const { authLoading, signUpWithEmailAndPassword, user } = useContext(
-    AuthContext
-  );
-  const router = useRouter();
-
-  useEffect(() => {
-    if (user != null) router.push('/home');
-  }, [user, router]);
-
+  const { authLoading, signInWithEmailAndPassword } = useContext(AuthContext);
   const onSubmit = (formData: Inputs) => {
-    signUpWithEmailAndPassword(formData.email, formData.password);
+    signInWithEmailAndPassword(formData.email, formData.password);
   };
   return (
     <div tw="flex min-h-screen text-white bg-primary-500">
@@ -37,7 +28,7 @@ export default function Home() {
             <div tw="relative w-32 h-12">
               <Image layout="fill" src="/vercel.svg" alt="Workflow" />
             </div>
-            <h2 tw="mt-6 text-accent-500 text-3xl font-extrabold">Sign up</h2>
+            <h2 tw="mt-6 text-accent-500 text-3xl font-extrabold">Sign in</h2>
           </div>
 
           <div tw="mt-6">
@@ -106,9 +97,9 @@ export default function Home() {
 
               <div tw="flex items-center justify-end">
                 <div tw="text-sm">
-                  <Link passHref href="/sign-in">
+                  <Link passHref href="/sign-up">
                     <a tw="text-right hover:text-accent-500 text-white font-medium">
-                      Already a user? Sign in
+                      Do not have an account? Sign up
                     </a>
                   </Link>
                 </div>
@@ -147,7 +138,7 @@ export default function Home() {
                       </svg>
                     </span>
                   )}
-                  Sign up
+                  Sign in
                 </button>
               </div>
             </form>

@@ -1,11 +1,11 @@
 import { PostModel } from '../model/Post';
 
-type CreatePostProps = {
+export type CreatePostArgs = {
   authorId: string;
   text: string;
 };
 
-const createPost = async ({ authorId, text }: CreatePostProps) => {
+const createPost = async ({ authorId, text }: CreatePostArgs) => {
   await PostModel.create<any>({
     authorId,
     text,
@@ -31,7 +31,8 @@ const getPosts = async (cursor: Date) => {
   return posts;
 };
 
-const getPostById = async (id: string) => {
+export type getPostByIdArgs = string;
+const getPostById = async (id: getPostByIdArgs) => {
   const post = await PostModel.findById(id)
     .populate('author')
     .populate('comments')
@@ -43,7 +44,8 @@ const getPostById = async (id: string) => {
   return post;
 };
 
-const getUsersPost = async (uid: string) => {
+export type getUsersPostArgs = string;
+const getUsersPost = async (uid: getUsersPostArgs) => {
   const post = await PostModel.find({ authorId: uid })
     .populate('author')
     .populate('comments')
@@ -55,7 +57,7 @@ const getUsersPost = async (uid: string) => {
   return post;
 };
 
-type LikePostArgs = {
+export type LikePostArgs = {
   userId: string;
   postId: string;
 };
@@ -77,7 +79,7 @@ const likePost = async ({ userId, postId }: LikePostArgs) => {
   return post;
 };
 
-type DisLikePostArgs = {
+export type DisLikePostArgs = {
   userId: string;
   postId: string;
 };

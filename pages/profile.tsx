@@ -3,8 +3,10 @@ import CommentBox from '../components/common/CommentBox';
 import LayOut from '../components/common/Layout';
 import CommentShowCase from '../components/common/CommentShowCase';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
+import useRedirect from '../hooks/useRedirect';
 
 const Profile = () => {
+  useRedirect();
   return (
     <LayOut>
       <Main>

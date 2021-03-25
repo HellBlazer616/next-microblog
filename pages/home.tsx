@@ -2,8 +2,10 @@ import tw, { styled } from 'twin.macro';
 import LayOut from '../components/common/Layout';
 import ShoutOutBox from '../components/home/ShoutOutBox';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
+import useRedirect from '../hooks/useRedirect';
 
 const Home = () => {
+  useRedirect();
   return (
     <LayOut>
       <Main>

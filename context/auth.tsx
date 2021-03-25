@@ -5,6 +5,9 @@ import { createContext, ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import toast from 'react-hot-toast';
 import { useInterval } from 'react-use';
+import { useMutation } from 'react-query';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { CreateUserArgs } from '../server/controller/UserController';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBxOWy44OL_a9ewM11EuB8YTifg4oXkoUw',
@@ -23,6 +26,7 @@ type FirebaseContextType = {
   user: firebase.User | null;
   signOut: (forgot?: boolean) => void;
   signInWithEmailAndPassword: (email: string, password: string) => void;
+  signUpWithEmailAndPassword: (email: string, password: string) => void;
   authIdToken: string | null;
   authLoading: boolean;
 };
@@ -31,6 +35,7 @@ const context: FirebaseContextType = {
   user: firebase.auth().currentUser,
   signOut: (forgot?: boolean) => {},
   signInWithEmailAndPassword: () => {},
+  signUpWithEmailAndPassword: () => {},
   authIdToken: null,
   authLoading: false,
 };
@@ -41,6 +46,20 @@ type Props = {
   children: ReactNode;
 };
 
+type ResponseType = {
+  success: boolean;
+  data: {
+    _id: string;
+    uid: string;
+    name: string;
+    __v: number;
+  };
+};
+
+type ErrorType = {
+  success: boolean;
+};
+
 export const AuthProvider = ({ children }: Props) => {
   const router = useRouter();
   const [authLoading, setAuthLoading] = useState(false);
@@ -48,6 +67,21 @@ export const AuthProvider = ({ children }: Props) => {
   const [currentUser, setCurrentUser] = useState(
     () => firebase.auth().currentUser
   );
+  const { mutate } = useMutation<
+    AxiosResponse<ResponseType>,
+    AxiosError<ErrorType>,
+    CreateUserArgs
+  >((createUser) => axios.post('api/user', createUser), {
+    onSuccess: () => {
+      toast.success('Welcome');
+      router.push('/home');
+      setAuthLoading(false);
+    },
+    onError: () => {
+      toast.error('Error! Could not sign in user');
+      setAuthLoading(false);
+    },
+  });
 
   const signOut = (forgot?: boolean): void => {
     firebase
@@ -59,29 +93,64 @@ export const AuthProvider = ({ children }: Props) => {
       .catch((error) => console.error(error));
   };
 
+  const signUpWithEmailAndPassword = async (
+    email: string,
+    password: string
+  ) => {
+    setAuthLoading(true);
+    try {
+      const userCred = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      if (userCred.user == null) {
+        toast.error('User do not exist');
+        return;
+      }
+      setCurrentUser(userCred.user);
+      mutate({
+        uid: userCred.user.uid,
+        name: userCred.user.displayName ?? email,
+      });
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        toast.error('User Already exists');
+        setAuthLoading(false);
+        return;
+      }
+      toast.error('Error! Could not sign in user');
+      setAuthLoading(false);
+    }
+  };
   const signInWithEmailAndPassword = async (
     email: string,
     password: string
   ) => {
     setAuthLoading(true);
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then((userCred) => {
-        router.push('/home');
-        toast.success(
-          `Welcome ${
-            userCred.user?.displayName == null
-              ? 'User'
-              : userCred.user.displayName
-          }`
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-        toast.error('Error! Could not sign in user');
-      })
-      .finally(() => setAuthLoading(false));
+    try {
+      const userCred = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+      if (userCred.user == null) {
+        toast.error('User do not exist');
+        return;
+      }
+      setCurrentUser(userCred.user);
+      toast.success('Welcome');
+      router.push('/home');
+    } catch (error) {
+      if (error.code === 'auth/user-not-found') {
+        toast.error('User do not exist');
+        setAuthLoading(false);
+        return;
+      }
+      if (error.code === 'auth/wrong-password') {
+        toast.error('Wrong Password');
+        setAuthLoading(false);
+        return;
+      }
+      toast.error('Error! Could not sign in user');
+      setAuthLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -152,6 +221,7 @@ export const AuthProvider = ({ children }: Props) => {
     authLoading,
     authIdToken,
     signInWithEmailAndPassword,
+    signUpWithEmailAndPassword,
   };
 
   return (

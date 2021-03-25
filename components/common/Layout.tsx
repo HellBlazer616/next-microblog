@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { CSSProperties, FC, useState } from 'react';
+import { CSSProperties, FC, useContext, useState } from 'react';
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 import {
@@ -15,6 +15,7 @@ import '@reach/dialog/styles.css';
 
 import VisuallyHidden from '../misc/VisuallyHidden';
 import ShoutOutBox from '../home/ShoutOutBox';
+import { AuthContext } from '../../context/auth';
 
 interface CustomCSSProperties extends CSSProperties {
   '--nav-width': string;
@@ -29,6 +30,7 @@ const customCSSVariables: CustomCSSProperties = {
 const LayOut: FC = ({ children }) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+  const { user, signOut } = useContext(AuthContext);
   const open = () => setShowDialog(true);
   const close = () => setShowDialog(false);
   const AnimatedDialogOverlay = animated(DialogOverlay);
@@ -65,28 +67,42 @@ const LayOut: FC = ({ children }) => {
       <Aside>
         <div tw="w-full space-y-6">
           <Link passHref href="/home">
-            <a>
+            <a className="menu__link">
               <HiHome className="menu__icon" />
               Home
             </a>
           </Link>
-
-          <Link passHref href="/profile">
-            <a>
-              <HiHashtag className="menu__icon" />
-              Profile
-            </a>
-          </Link>
+          {user != null ? (
+            <Link passHref href="/profile">
+              <a className="menu__link">
+                <HiHashtag className="menu__icon" />
+                Profile
+              </a>
+            </Link>
+          ) : null}
         </div>
         <div tw="flex flex-col justify-center space-y-6">
           <AccountButton type="button" tw="px-5 py-2 w-full" onClick={open}>
             <HiPaperAirplane className="menu__icon" />
             <span>Shout out</span>
           </AccountButton>
-          <AccountButton type="button" tw="px-5 py-2 w-full">
-            <HiUser className="menu__icon" />
-            <span>Sign out</span>
-          </AccountButton>
+          {user == null ? (
+            <Link passHref href="/sign-in">
+              <AccountButton as="a" tw="px-5 py-2 w-full">
+                <HiUser className="menu__icon" />
+                <span>Sign in</span>
+              </AccountButton>
+            </Link>
+          ) : (
+            <AccountButton
+              type="button"
+              tw="px-5 py-2 w-full"
+              onClick={() => signOut()}
+            >
+              <HiUser className="menu__icon" />
+              <span>Sign out</span>
+            </AccountButton>
+          )}
         </div>
         {showDialogTransition.map(
           ({ item, key, props }) =>
@@ -125,18 +141,20 @@ const LayOut: FC = ({ children }) => {
       <Footer>
         <div tw="flex items-center h-full space-x-8">
           <Link passHref href="/home">
-            <a>
+            <a className="menu__link">
               <VisuallyHidden>Home</VisuallyHidden>
               <HiHome className="menu__icon" />
             </a>
           </Link>
 
-          <Link passHref href="/profile">
-            <a>
-              <VisuallyHidden>Home</VisuallyHidden>
-              <HiHashtag className="menu__icon" />
-            </a>
-          </Link>
+          {user != null ? (
+            <Link passHref href="/profile">
+              <a className="menu__link">
+                <VisuallyHidden>profile</VisuallyHidden>
+                <HiHashtag className="menu__icon" />
+              </a>
+            </Link>
+          ) : null}
         </div>
         <div tw="flex items-center justify-center space-x-3">
           <FooterButton type="button" tw="w-full" onClick={open}>
@@ -162,9 +180,17 @@ const LayOut: FC = ({ children }) => {
                   style={props}
                   tw="bottom-16"
                 >
-                  <button className="btn" type="button" tw="" role="menuitem">
-                    Sign out
-                  </button>
+                  {user == null ? (
+                    <Link href="/sign-in" passHref>
+                      <a className="btn" tw="" role="menuitem">
+                        Sign in
+                      </a>
+                    </Link>
+                  ) : (
+                    <button className="btn" type="button" tw="" role="menuitem">
+                      Sign out
+                    </button>
+                  )}
                 </BaseMenu>
               )
           )}
@@ -180,7 +206,7 @@ const Page = styled.div`
   & .menu__icon {
     ${tw`w-9 h-9`}
   }
-  a {
+  & .menu__link {
     ${tw`inline-flex justify-center w-full rounded-sm transform-gpu transition`}
     :hover {
       ${tw`text-accent-500`}
@@ -191,7 +217,7 @@ const Page = styled.div`
 const Aside = styled.aside`
   ${tw`fixed left-0 top-0 hidden flex-col justify-between px-20 py-8 h-screen text-white bg-primary-400 lg:flex`}
   width: var(--nav-width);
-  a {
+  & .menu__link {
     ${tw`grid grid-cols-2 items-center px-6 py-2 text-xl hover:bg-primary-300 rounded-full`}
   }
 `;
@@ -211,7 +237,7 @@ const BaseMenu = styled(animated.div)`
 const Footer = styled.footer`
   ${tw`fixed bottom-0 flex items-center justify-between px-8 w-full bg-primary-400 shadow lg:hidden`}
   height: var(--footer-height);
-  a {
+  & .menu__link {
     ${tw`items-center h-full`}
   }
 `;
