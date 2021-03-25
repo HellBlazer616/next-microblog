@@ -1,14 +1,11 @@
 import tw, { styled } from 'twin.macro';
 import { useRouter } from 'next/router';
-import { useContext } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import CommentBox from '../../components/common/CommentBox';
 import LayOut from '../../components/common/Layout';
-import CommentShowCase from '../../components/common/CommentShowCase';
 import ShoutOutShowCaseWithComment from '../../components/posts/ShoutOutShowCaseWithComment';
-import { AuthContext } from '../../context/auth';
 import { Post } from '../../base';
 
 type Props = {

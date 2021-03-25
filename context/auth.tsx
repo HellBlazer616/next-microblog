@@ -33,6 +33,7 @@ type FirebaseContextType = {
 
 const context: FirebaseContextType = {
   user: firebase.auth().currentUser,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   signOut: (forgot?: boolean) => {},
   signInWithEmailAndPassword: () => {},
   signUpWithEmailAndPassword: () => {},

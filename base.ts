@@ -9,7 +9,7 @@ export interface Comment {
   author: User;
   authorId: string;
   text: string;
-  createAt: string;
+  createdAt: string;
   updatedAt: string;
 }
 
@@ -22,7 +22,7 @@ export interface Post {
   likedByUsers?: User[];
   disLikedByUsersId?: string[];
   disLikedByUsers?: User[];
-  createAt: string;
+  createdAt: string;
   updatedAt: string;
   author: User;
 }

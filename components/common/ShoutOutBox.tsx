@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react';
+import React, { useContext } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';

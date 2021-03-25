@@ -1,6 +1,5 @@
 /* eslint-disable no-control-regex */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import Head from 'next/head';
 import tw from 'twin.macro';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';

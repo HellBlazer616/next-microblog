@@ -18,23 +18,6 @@ type Props = {
   };
 };
 
-const EndComponent = styled.div`
-  background: #fff;
-  border-radius: 5px;
-  max-width: 60%;
-  margin: auto;
-  margin-bottom: 2rem;
-  height: 100px;
-  display: grid;
-  place-content: center;
-  grid-template-columns: 30vw;
-
-  @media only screen and (max-width: 727px) {
-    max-width: 100%;
-    grid-template-columns: 80vw;
-  }
-`;
-
 const EndMessage = () => {
   return (
     <div tw="mt-4 mx-auto max-w-prose bg-accent-600">
@@ -70,6 +53,7 @@ const Home = () => {
     if (data?.pages == null) return 0;
 
     const len = data.pages.reduce((acc, page) => {
+      // eslint-disable-next-line no-param-reassign
       acc += page.data.posts.length;
       return acc;
     }, 0);
