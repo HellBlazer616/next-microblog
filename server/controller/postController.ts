@@ -20,7 +20,7 @@ const createPost = async ({ authorId, text }: CreatePostArgs) => {
 const getPosts = async (cursor: Date) => {
   const posts = await PostModel.find({ createdAt: { $lt: cursor } })
     .sort({ createdAt: -1 })
-    .limit(2)
+    .limit(5)
     .populate('author')
     .populate('comments')
     .populate('likedByUsers')

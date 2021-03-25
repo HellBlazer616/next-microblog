@@ -10,6 +10,7 @@ import {
 import Link from 'next/link';
 import { Post } from '../../base';
 import CommentShowCase from '../common/CommentShowCase';
+import { formatDate } from '../../util/formatDate';
 
 type Props = {
   post: Post;
@@ -34,6 +35,9 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
     return post.comments.length;
   }, [post.comments]);
 
+  const formattedTime = useMemo(() => formatDate(Date.parse(post.updatedAt)), [
+    post.updatedAt,
+  ]);
   return (
     <div tw="space-y-3">
       <Wrapper>
@@ -50,7 +54,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
         <div tw="space-y-4">
           <span tw="text-accent-500 font-bold">
             {post.author.name}{' '}
-            <span tw="text-white text-sm font-normal"> {post.updatedAt}</span>
+            <span tw="text-white text-sm font-normal"> {formattedTime}</span>
           </span>
           <div>{post.text}</div>
           <div tw="flex flex-wrap justify-end w-full space-x-10">
@@ -88,7 +92,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
       <section tw="space-y-2">
         {post.comments != null &&
           post.comments.map((comment) => {
-            return <CommentShowCase comment={comment} />;
+            return <CommentShowCase comment={comment} key={comment._id} />;
           })}
       </section>
     </div>

@@ -36,7 +36,6 @@ const PostById = () => {
     }
   );
 
-  console.log(data?.data);
   return (
     <LayOut>
       <Main>

@@ -13,11 +13,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           res.status(400).json({ success: false });
           return;
         }
-        const post = await getUsersPost(uid);
+        const posts = await getUsersPost(uid);
         res.status(200).json({
           success: true,
           data: {
-            post,
+            posts,
           },
         });
       } catch (error) {

@@ -22,7 +22,7 @@ const Profile = () => {
   useRedirect();
   const { user } = useContext(AuthContext);
   const { data } = useQuery<Props>(
-    ['user', 'post'],
+    ['user', user?.uid],
     async () => {
       const res = await axios.get(`/api/user/posts/${user?.uid}`);
       return res.data;
@@ -31,6 +31,7 @@ const Profile = () => {
       enabled: user?.uid != null,
     }
   );
+  console.log(user?.uid);
   return (
     <LayOut>
       <Main>

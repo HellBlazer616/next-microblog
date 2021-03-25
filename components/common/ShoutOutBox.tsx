@@ -1,17 +1,61 @@
-import React from 'react';
+import React, { FC, useContext } from 'react';
 import tw, { styled } from 'twin.macro';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
+import { useMutation, useQueryClient } from 'react-query';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { Comment } from '../../base';
+import { AuthContext } from '../../context/auth';
 
 type Input = {
   text: string;
 };
 
+type DataType = {
+  success: boolean;
+  data: {
+    comment: Comment[];
+  };
+};
+
+interface Variables extends Input {
+  authorId: string;
+}
+
 const ShoutOutBox = () => {
-  const { register, errors, handleSubmit } = useForm<Input>();
+  const { register, errors, handleSubmit, setError, reset } = useForm<Input>();
+  const { user } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+  const { mutateAsync } = useMutation<DataType, any, Variables>(
+    (createPost) => axios.post('api/posts', createPost),
+    {
+      onSuccess: () => {
+        reset();
+        queryClient.invalidateQueries(['user', user?.uid]);
+        queryClient.invalidateQueries(['posts']);
+      },
+    }
+  );
 
   const onSubmit = (formData: Input) => {
-    console.log({ formData });
+    if (user?.uid == null) {
+      setError('text', {
+        message: 'Please sign in to comment',
+      });
+      return;
+    }
+    toast.promise(
+      mutateAsync({
+        authorId: user.uid,
+        text: formData.text,
+      }),
+      {
+        loading: 'Saving post',
+        success: 'Successfully saved post',
+        error: 'Could not save post',
+      }
+    );
   };
   return (
     <Wrapper tw="">

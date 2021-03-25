@@ -1,6 +1,8 @@
 import axios from 'axios';
 import tw, { styled } from 'twin.macro';
 import { useInfiniteQuery } from 'react-query';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useMemo } from 'react';
 import LayOut from '../components/common/Layout';
 import ShoutOutBox from '../components/common/ShoutOutBox';
 import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
@@ -16,10 +18,40 @@ type Props = {
   };
 };
 
+const EndComponent = styled.div`
+  background: #fff;
+  border-radius: 5px;
+  max-width: 60%;
+  margin: auto;
+  margin-bottom: 2rem;
+  height: 100px;
+  display: grid;
+  place-content: center;
+  grid-template-columns: 30vw;
+
+  @media only screen and (max-width: 727px) {
+    max-width: 100%;
+    grid-template-columns: 80vw;
+  }
+`;
+
+const EndMessage = () => {
+  return (
+    <div tw="mt-4 mx-auto max-w-prose bg-accent-600">
+      <div tw="mx-auto px-3 py-3 max-w-7xl sm:px-6 lg:px-8">
+        <div tw="pr-16 sm:px-16 sm:text-center">
+          <p tw="text-white font-medium">
+            <span>You have seen all the post 🎉🎉🚀🚀!</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 const Home = () => {
   useRedirect();
 
-  const { data, fetchNextPage } = useInfiniteQuery<Props>(
+  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery<Props>(
     'posts',
     async ({ pageParam = 'FIRST' }) => {
       const res = await axios.get(`/api/posts?cursor=${pageParam}`);
@@ -34,16 +66,37 @@ const Home = () => {
     }
   );
 
+  const postsLength = useMemo(() => {
+    if (data?.pages == null) return 0;
+
+    const len = data.pages.reduce((acc, page) => {
+      acc += page.data.posts.length;
+      return acc;
+    }, 0);
+    return len;
+  }, [data?.pages]);
+
   return (
     <LayOut>
       <Main>
         <ShoutOutBox />
-        {data?.pages != null &&
-          data.pages.map((page) =>
-            page.data.posts.map((post) => (
-              <ShoutOutShowCase post={post} key={post._id} />
-            ))
-          )}
+        {data?.pages != null && (
+          <InfiniteScroll
+            next={fetchNextPage}
+            loader={<div>Loading</div>}
+            hasMore={hasNextPage === true}
+            dataLength={postsLength}
+            endMessage={<EndMessage />}
+          >
+            <section tw="space-y-10">
+              {data.pages.map((page) =>
+                page.data.posts.map((post) => (
+                  <ShoutOutShowCase post={post} key={post._id} />
+                ))
+              )}
+            </section>
+          </InfiniteScroll>
+        )}
       </Main>
     </LayOut>
   );
