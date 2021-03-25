@@ -43,6 +43,18 @@ const getPostById = async (id: string) => {
   return post;
 };
 
+const getUsersPost = async (uid: string) => {
+  const post = await PostModel.find({ authorId: uid })
+    .populate('author')
+    .populate('comments')
+    .populate('likedByUsers')
+    .populate('disLikedByUsers')
+    .lean()
+    .exec();
+
+  return post;
+};
+
 type LikePostArgs = {
   userId: string;
   postId: string;
@@ -87,4 +99,11 @@ const disLikePost = async ({ userId, postId }: DisLikePostArgs) => {
   return post;
 };
 
-export { createPost, getPostById, likePost, disLikePost, getPosts };
+export {
+  createPost,
+  getPostById,
+  likePost,
+  disLikePost,
+  getPosts,
+  getUsersPost,
+};

@@ -1,14 +1,14 @@
 import tw, { styled } from 'twin.macro';
-import LayOut from '../components/common/Layout';
-import ShoutOutBox from '../components/home/ShoutOutBox';
-import ShoutOutShowCase from '../components/home/ShoutOutShowCase';
+import CommentBox from '../../components/common/CommentBox';
+import LayOut from '../../components/common/Layout';
+import ShoutOutShowCase from '../../components/home/ShoutOutShowCase';
 
-const Home = () => {
+const PostById = () => {
   return (
     <LayOut>
       <Main>
-        <ShoutOutBox />
         <ShoutOutShowCase />
+        <CommentBox />
       </Main>
     </LayOut>
   );
@@ -21,4 +21,4 @@ const Main = styled.main`
   }
 `;
 
-export default Home;
+export default PostById;
