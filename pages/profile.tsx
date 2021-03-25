@@ -10,7 +10,7 @@ const Profile = () => {
   return (
     <LayOut>
       <Main>
-        <ShoutOutShowCase />
+        {/* <ShoutOutShowCase /> */}
         <section tw="space-y-2">
           <CommentShowCase />
           <CommentShowCase />

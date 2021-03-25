@@ -4,7 +4,8 @@ import { Comment } from './Comment';
 import { TimeStamps } from "@typegoose/typegoose/lib/defaultClasses";
 import * as mongoose from 'mongoose'
 @modelOptions({ options: { customName: 'Post' },  schemaOptions: {
-  toObject: {virtuals: true}
+  toObject: {virtuals: true},
+  toJSON: { virtuals: true }
  }  })
 class Post extends TimeStamps {
   

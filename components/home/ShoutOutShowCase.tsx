@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, useMemo } from 'react';
 import tw, { styled } from 'twin.macro';
 import Image from 'next/image';
 import {
@@ -7,8 +7,25 @@ import {
   HiThumbDown,
   HiThumbUp,
 } from 'react-icons/hi';
+import { Post } from '../../base';
 
-const ShoutOutShowCase = () => {
+type Props = {
+  post: Post;
+};
+
+const ShoutOutShowCase: FC<Props> = ({ post }) => {
+  const likedBy = useMemo(() => {
+    if (post.likedByUsers == null) return 0;
+
+    return post.likedByUsers.length;
+  }, [post.likedByUsers]);
+
+  const dislikedBy = useMemo(() => {
+    if (post.likedByUsers == null) return 0;
+
+    return post.likedByUsers.length;
+  }, [post.likedByUsers]);
+
   return (
     <Wrapper>
       <figure>
@@ -23,25 +40,29 @@ const ShoutOutShowCase = () => {
       </figure>
       <div tw="space-y-4">
         <span tw="text-accent-500 font-bold">
-          Rifat Hossain <span tw="text-white text-sm font-normal"> 1h</span>
+          {post.author.name}{' '}
+          <span tw="text-white text-sm font-normal"> {post.updatedAt}</span>
         </span>
-        <div>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus a modi
-          hic assumenda quaerat dolore. Similique facere quam eaque
-          reprehenderit ab itaque et, tenetur saepe, velit praesentium expedita
-          beatae cumque! Lorem ipsum dolor sit amet, consectetur adipisicing
-          elit. Minus a modi hic assumenda
-        </div>
+        <div>{post.text}</div>
         <div tw="flex flex-wrap justify-end w-full space-x-10">
           <ShoutOutBoxButton type="button">
             <HiChat />
           </ShoutOutBoxButton>
+
           <ShoutOutBoxButton type="button" onClick={() => console.log('like')}>
             <HiThumbUp />
+            <span tw="absolute -right-1 -top-3 w-5 h-5 text-sm bg-accent-500 rounded-full">
+              {likedBy}
+            </span>
           </ShoutOutBoxButton>
+
           <ShoutOutBoxButton type="button">
             <HiThumbDown />
+            <span tw="absolute -right-1 -top-3 w-5 h-5 text-sm bg-accent-500 rounded-full">
+              {dislikedBy}
+            </span>
           </ShoutOutBoxButton>
+
           <ShoutOutBoxButton type="button">
             <HiDotsCircleHorizontal />
           </ShoutOutBoxButton>
@@ -60,5 +81,5 @@ const Wrapper = styled.div`
 `;
 
 const ShoutOutBoxButton = styled.button`
-  ${tw`inline-flex items-center mb-3 px-3 py-3 text-white text-lg font-medium bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-primary-100 focus:ring-offset-2 focus:ring-2`}
+  ${tw`relative inline-flex items-center px-3 py-3 text-white text-lg font-medium bg-accent-600 hover:bg-accent-700 border border-transparent rounded-full focus:outline-none shadow-sm focus:ring-accent-500 focus:ring-offset-primary-100 focus:ring-offset-2 focus:ring-2`}
 `;

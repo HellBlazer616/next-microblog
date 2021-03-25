@@ -1,4 +1,4 @@
-import { useMutation } from 'react-query';
+import { useInfiniteQuery, useMutation } from 'react-query';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { CreateUserArgs } from '../server/controller/UserController';
 
@@ -15,15 +15,13 @@ type ResponseType = {
 type ErrorType = {
   success: boolean;
 };
-
-const useGetPosts = ({ uid, name }: CreateUserArgs) => {
-  return useMutation<AxiosResponse<ResponseType>, AxiosError<ErrorType>>(
-    'createUser',
-    () =>
-      axios.post('api/user', {
-        uid,
-        name,
-      })
+const useGetPostsKey = 'posts';
+const useGetPosts = (cursor = 'FIRST') => {
+  return useInfiniteQuery<AxiosResponse<ResponseType>, AxiosError<ErrorType>>(
+    useGetPostsKey,
+    () => axios.get(`api/posts?cursor=${cursor}`)
   );
 };
+
+useGetPosts.key = () => useGetPostsKey;
 export { useGetPosts };
