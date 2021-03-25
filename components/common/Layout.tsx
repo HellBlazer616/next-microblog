@@ -92,7 +92,6 @@ const LayOut: FC = ({ children }) => {
 
   return (
     <Page style={customCSSVariables}>
-      {isFetching && <Loading />}
       <Aside>
         <div tw="w-full space-y-6">
           <Link passHref href="/home">

@@ -35,11 +35,12 @@ const Profile = () => {
       <Main>
         <ShoutOutBox />
         {status === 'loading' && <MyLoader />}
-        {data?.data.posts != null ? (
-          data.data.posts.map((post) => {
-            return <ShoutOutShowCase post={post} key={post._id} />;
-          })
-        ) : (
+        {data?.data.posts != null
+          ? data.data.posts.map((post) => {
+              return <ShoutOutShowCase post={post} key={post._id} />;
+            })
+          : null}
+        {status !== 'loading' && data?.data.posts == null && (
           <div tw="flex items-center justify-center mx-auto max-w-xl h-24 text-base bg-accent-500">
             <p>Write your first post</p>
           </div>

@@ -90,7 +90,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
   const { mutateAsync: likeMutation } = useMutation<Post, any, LikeVariable>(
     (createComment) => axios.put('/api/posts', createComment),
     {
-      onSuccess: () => {
+      onSettled: () => {
         queryClient.invalidateQueries(['user', user?.uid]);
         queryClient.invalidateQueries(['posts']);
         queryClient.invalidateQueries(['post', post._id]);
@@ -102,7 +102,7 @@ const ShoutOutShowCase: FC<Props> = ({ post }) => {
     any,
     DisLikeVariable
   >((createComment) => axios.put('/api/posts', createComment), {
-    onSuccess: () => {
+    onSettled: () => {
       queryClient.invalidateQueries(['user', user?.uid]);
       queryClient.invalidateQueries(['posts']);
       queryClient.invalidateQueries(['post', post._id]);
